@@ -1,0 +1,70 @@
+#include <string.h>
+#include <time.h>
+
+typedef struct {
+    int value;
+    int suit;
+} card;
+
+typedef struct {
+    card *cards;
+    int decksize;
+    char **suits;
+} deck;
+
+#define SUITMAXLEN 20
+
+
+deck createNewDeck(int numsuits, int numvalues) {
+    deck newDeck;
+    newDeck.decksize = numsuits * numvalues;
+    // alloc suits and cards arrays
+    newDeck.suits = calloc(numsuits * sizeof(char*), 1);
+    newDeck.cards = calloc(newDeck.decksize * sizeof(card), 1);
+    int i=0,j=0,counter=0;
+    for (i = 0; i < numsuits; i++) {
+        for (j = 0; j < numvalues; j++) {
+            // generate each card combination
+            newDeck.cards[counter].value = j;
+            newDeck.cards[counter].suit = i;
+            counter++;
+        }
+        // alloc a string to hold each suit in the list of suits and set a default value
+        newDeck.suits[i] = calloc(SUITMAXLEN, 1);
+        sprintf(newDeck.suits[i], "Suit%d", i);
+    }
+    return newDeck;
+}
+ 
+int customizeSuitName(deck *inputDeck, int index, char *newName) {
+    // allows replacing the name of a suit with something else.
+    // return 0 = success, 1 = error
+    if (strnlen(newName, SUITMAXLEN) == SUITMAXLEN) return 1;
+    strncpy(inputDeck->suits[index], newName, SUITMAXLEN - 1);
+    return 0;
+}
+
+void shuffleDeck(deck *inputDeck) {
+    time_t t;
+    srand(time(&t));
+    int i, a, b;
+    card temp;
+    for (i = 0; i < 1000; i++) {
+        a = rand() % inputDeck->decksize;
+        b = rand() % inputDeck->decksize;
+        // memcpy does not allow source and destination regions to overlap
+        if (a != b) {
+            memcpy(&temp, &(inputDeck->cards[a]), sizeof(card));
+            memcpy(&(inputDeck->cards[a]), &(inputDeck->cards[b]), sizeof(card));
+            memcpy(&(inputDeck->cards[b]), &temp, sizeof(card));
+        }
+    }
+}
+
+void printDeck(deck inputDeck) {
+    int i;
+    printf("%d cards:\n----------------------------------------\n", inputDeck.decksize);
+    for (i = 0; i < inputDeck.decksize; i++) {
+        printf("%d of %s\n", inputDeck.cards[i].value, inputDeck.suits[inputDeck.cards[i].suit]);
+    }
+}
