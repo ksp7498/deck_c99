@@ -1,6 +1,8 @@
 #include <string.h>
 #include <time.h>
 
+#define SUITMAXLEN 20
+
 typedef struct {
     int value;
     int suit;
@@ -11,8 +13,6 @@ typedef struct {
     int decksize;
     char **suits;
 } deck;
-
-#define SUITMAXLEN 20
 
 
 deck createNewDeck(int numsuits, int numvalues) {
@@ -52,19 +52,87 @@ void shuffleDeck(deck *inputDeck) {
     for (i = 0; i < 1000; i++) {
         a = rand() % inputDeck->decksize;
         b = rand() % inputDeck->decksize;
-        // memcpy does not allow source and destination regions to overlap
+        // memcpy does not allow source and destination regions to overlap so we
+		// can only swap if a != b, in other words can't swap a card with itself
         if (a != b) {
             memcpy(&temp, &(inputDeck->cards[a]), sizeof(card));
             memcpy(&(inputDeck->cards[a]), &(inputDeck->cards[b]), sizeof(card));
             memcpy(&(inputDeck->cards[b]), &temp, sizeof(card));
         }
+		// if a == b, decrement i once so we re-do this swap attempt. this makes sure
+		// we do 1000 actual swaps instead of wasting some when a == b
+		else {
+			i--;
+		}
     }
 }
+
+char* getNameFromCardValue(int cardvalue) {
+	switch (cardvalue) {
+		case 0:
+			return "Ace";
+			break;
+		
+		case 1:
+			return "Two";
+			break;
+		
+		case 2:
+			return "Three";
+			break;
+		
+		case 3:
+			return "Four";
+			break;
+		
+		case 4:
+			return "Five";
+			break;
+		
+		case 5:
+			return "Six";
+			break;
+		
+		case 6:
+			return "Seven";
+			break;
+		
+		case 7:
+			return "Eight";
+			break;
+		
+		case 8:
+			return "Nine";
+			break;
+		
+		case 9:
+			return "Ten";
+			break;
+		
+		case 10:
+			return "Jack";
+			break;
+		
+		case 11:
+			return "Queen";
+			break;
+		
+		case 12:
+			return "King";
+			break;
+		
+		default:
+			return "Unknown";
+			break;
+	}
+}
+
 
 void printDeck(deck inputDeck) {
     int i;
     printf("%d cards:\n----------------------------------------\n", inputDeck.decksize);
     for (i = 0; i < inputDeck.decksize; i++) {
-        printf("%d of %s\n", inputDeck.cards[i].value, inputDeck.suits[inputDeck.cards[i].suit]);
+        printf("%s of %s\n", getNameFromCardValue(inputDeck.cards[i].value), inputDeck.suits[inputDeck.cards[i].suit]);
     }
 }
+
