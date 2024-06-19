@@ -53,78 +53,78 @@ void shuffleDeck(deck *inputDeck) {
         a = rand() % inputDeck->decksize;
         b = rand() % inputDeck->decksize;
         // memcpy does not allow source and destination regions to overlap so we
-		// can only swap if a != b, in other words can't swap a card with itself
+        // can only swap if a != b, in other words can't swap a card with itself
         if (a != b) {
             memcpy(&temp, &(inputDeck->cards[a]), sizeof(card));
             memcpy(&(inputDeck->cards[a]), &(inputDeck->cards[b]), sizeof(card));
             memcpy(&(inputDeck->cards[b]), &temp, sizeof(card));
         }
-		// if a == b, decrement i once so we re-do this swap attempt. this makes sure
-		// we do 1000 actual swaps instead of wasting some when a == b
-		else {
-			i--;
-		}
+        // if a == b, decrement i once so we re-do this swap attempt. this makes sure
+        // we do 1000 actual swaps instead of wasting some when a == b
+        else {
+            i--;
+        }
     }
 }
 
 char* getNameFromCardValue(int cardvalue) {
-	switch (cardvalue) {
-		case 0:
-			return "Ace";
-			break;
-		
-		case 1:
-			return "Two";
-			break;
-		
-		case 2:
-			return "Three";
-			break;
-		
-		case 3:
-			return "Four";
-			break;
-		
-		case 4:
-			return "Five";
-			break;
-		
-		case 5:
-			return "Six";
-			break;
-		
-		case 6:
-			return "Seven";
-			break;
-		
-		case 7:
-			return "Eight";
-			break;
-		
-		case 8:
-			return "Nine";
-			break;
-		
-		case 9:
-			return "Ten";
-			break;
-		
-		case 10:
-			return "Jack";
-			break;
-		
-		case 11:
-			return "Queen";
-			break;
-		
-		case 12:
-			return "King";
-			break;
-		
-		default:
-			return "Unknown";
-			break;
-	}
+    switch (cardvalue) {
+        case 0:
+            return "Ace";
+            break;
+        
+        case 1:
+            return "Two";
+            break;
+        
+        case 2:
+            return "Three";
+            break;
+        
+        case 3:
+            return "Four";
+            break;
+        
+        case 4:
+            return "Five";
+            break;
+        
+        case 5:
+            return "Six";
+            break;
+        
+        case 6:
+            return "Seven";
+            break;
+        
+        case 7:
+            return "Eight";
+            break;
+        
+        case 8:
+            return "Nine";
+            break;
+        
+        case 9:
+            return "Ten";
+            break;
+        
+        case 10:
+            return "Jack";
+            break;
+        
+        case 11:
+            return "Queen";
+            break;
+        
+        case 12:
+            return "King";
+            break;
+        
+        default:
+            return "Unknown";
+            break;
+    }
 }
 
 
